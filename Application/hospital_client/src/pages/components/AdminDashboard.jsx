@@ -1,7 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const patientsPerPage = 10;
+
+  const fetchPatients = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/patients');
+      setPatients(res.data);
+    } catch (error) {
+      console.error('Error fetching patients:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatients();
+  }, []);
+
+  const indexOfLastPatient = currentPage * patientsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const currentPatients = patients.slice(indexOfFirstPatient, indexOfLastPatient);
+
+  const nextPage = () => {
+    if (indexOfLastPatient < patients.length) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  const handleCreatePatient = () => {
+    navigate('/create-patient');
+  };
+
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
@@ -35,13 +75,15 @@ const AdminDashboard = () => {
             <p>Patients Released</p>
           </div>
           <div className="card card-blue">
-            <h3>90</h3>
+            <h3>{patients.length}</h3>
             <p>Total Patients</p>
           </div>
         </section>
 
         <div className="create-patient-button-container">
-          <button className="create-patient-button">+ Create Patient</button>
+          <button className="create-patient-button" onClick={handleCreatePatient}>
+            + Create Patient
+          </button>
         </div>
 
         <section className="patient-table-section">
@@ -50,35 +92,34 @@ const AdminDashboard = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Status</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>John Doe</td>
-                <td>45</td>
-                <td>Male</td>
-                <td>Admitted</td>
-                <td>
-                  <button className="edit-btn">Edit</button>
-                  <button className="delete-btn">Delete</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Jane Smith</td>
-                <td>32</td>
-                <td>Female</td>
-                <td>Released</td>
-                <td>
-                  <button className="edit-btn">Edit</button>
-                  <button className="delete-btn">Delete</button>
-                </td>
-              </tr>
+              {currentPatients.map((patient, index) => (
+                <tr key={index}>
+                  <td>{patient.firstName} {patient.lastName}</td>
+                  <td>{patient.email}</td>
+                  <td>{patient.phone}</td>
+                  <td>
+                    {patient.addressLine1}, {patient.city}, {patient.region}, {patient.country}
+                  </td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button className="delete-btn">Delete</button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+
+          <div className="pagination">
+            <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
+            <button onClick={nextPage} disabled={indexOfLastPatient >= patients.length}>Next</button>
+          </div>
         </section>
       </main>
     </div>

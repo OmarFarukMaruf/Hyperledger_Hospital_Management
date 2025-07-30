@@ -3,6 +3,7 @@ const cors = require('cors');
 const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
+const patientRoutes = require('./routes/patient');
 
 const app = express();
 app.use(express.json());
@@ -34,24 +35,6 @@ app.get('/patient/:id', async (req, res) => {
 });
 
 // (similarly implement update, delete, and history routes)
-
+app.use('/api/patients', patientRoutes);
 app.listen(8080, () => console.log('Server running on port 8080'));
-/*
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const corsOptions = {
-    origin: 'http://localhost:5173',
-};
 
-// Adjust this to your React app's
-app.use(cors(corsOptions));
-
-app.get('/', (req, res) => {
-    res.json({ fruits: ['apple', 'banana', 'cherry'] });
-});
-
-app.listen(8080, () => {
-    console.log('Server is running on http://localhost:8080');
-});
-*/

@@ -57,6 +57,7 @@
   background: transparent;
   width: 100%;
   font-size: 16px;
+  color: #000; /* Set input text color to black */
 }
 
 .login-button {

@@ -1,0 +1,85 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px gray;
+}
+
+.patient-form-container h2,
+.patient-form-container p {
+  text-align: center;
+    color: #333;
+}
+
+.patient-form {
+  width: 100%;
+}
+
+.patient-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+.patient-form input,
+.patient-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.patient-form input::placeholder {
+  color: #999;
+}
+
+.patient-form input:focus,
+.patient-form select:focus {
+  outline: none;
+  border-color: #aaa;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+.name-group,
+.address-group {
+  display: flex;
+  gap: 10px;
+}
+
+.name-group input,
+.address-group input,
+.address-group select {
+  flex: 1;
+}
+
+.submit-btn {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background-color: #555;
+}
